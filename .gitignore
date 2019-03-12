@@ -2,3 +2,7 @@
 *.csv
 *.pyc
 *.vscode
+__pycache__/*
+*/__pycache__/*
+note_format/__pycache__/*
+note_format/__pycache__

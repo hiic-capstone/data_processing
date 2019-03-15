@@ -35,7 +35,7 @@ class Report:
         if subtype in basics:
             return raw.strip()
         elif subtype == Subtype.aux_concept_codes:
-            return raw.split(',')
+            return raw.strip().replace(' ', '')
         else:
             raise ValueError('Uncleanable subtype, verify data')
 

@@ -1,7 +1,8 @@
 from typing import List, Dict, Tuple, T
 from more_itertools import peekable
 
-from .report import Report, report_id
+from note_cleaning.report import Report, report_id
+from util.db_util import DatabaseHandle
 
 
 class PittHandler:
@@ -32,5 +33,15 @@ class PittHandler:
             with open(path, 'w+') as outfile:
                 outfile.writelines(report.content)
 
-    def meta_db(self, params):
-        pass
+    def meta_to_db(self, params, table='meta', drop=False):
+        handle = DatabaseHandle(params=params)
+        handle.create_meta_table(table=table, drop=drop)
+        meta = list()
+        for report in self.reports:
+            # We can do this because the order of info
+            # in ReportMeta = order in db_util.create_meta_table
+            meta.append(
+                tuple([
+                    report.id_,
+                    *list(vars(report.meta).values())]))
+        handle.populate_meta(data=meta)

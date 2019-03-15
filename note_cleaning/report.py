@@ -19,10 +19,9 @@ class Report:
     def read(self, lines: List[str], index: int):
         index = self.read_meta(lines, index)
         index = self.read_content(lines, index)
-        self.content = [(line + '\n') for line in self.content]
         return index
 
-    def read_meta(self, lines: List[str], index: int):
+    def read_meta(self, lines: List[str], index: int) -> int:
         self.meta = ReportMeta()
         for metaindex in range(6):
             raw = lines[index + metaindex]
@@ -40,7 +39,7 @@ class Report:
         else:
             raise ValueError('Uncleanable subtype, verify data')
 
-    def read_content(self, lines: List[str], index: int):
+    def read_content(self, lines: List[str], index: int) -> int:
         while index < (len(lines) - 1):
             if report_id(lines[index]) is None:
                 self.content.append(lines[index])

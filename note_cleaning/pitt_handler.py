@@ -14,8 +14,7 @@ class PittHandler:
         ''' note: filename for set of UPitt clinical notes'''
         current_pid = 0
         lines = [x.strip() for x in
-                 open(note, 'r').readlines()
-                 if x.strip() != '']
+                 open(note, 'r').readlines()]
         index = 0
         while index < (len(lines) - 1):
             current_pid = report_id(lines[index])
@@ -23,11 +22,15 @@ class PittHandler:
             self.reports.append(Report(current_pid))
             index = self.reports[-1].read(lines, index)
 
-            # print(self.reports[current_pid].content)
-
     def to_files(self, dir_, outfile_base='pitt_report_'):
         for report in self.reports:
+            report.content = [(line + '\n')
+                              for line in report.content
+                              if line != '']
             fname = f'{outfile_base}{report.id_}'
             path = f'{dir_}/{fname}.txt'
             with open(path, 'w+') as outfile:
                 outfile.writelines(report.content)
+
+    def meta_db(self, params):
+        pass
